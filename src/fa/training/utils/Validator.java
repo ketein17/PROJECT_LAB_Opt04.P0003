@@ -1,10 +1,5 @@
 package fa.training.utils;
 
-import fa.training.model.Airplane;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Validator {
     public static boolean isID(String id){
         boolean check=true;

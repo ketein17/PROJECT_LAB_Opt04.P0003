@@ -332,6 +332,7 @@ public class AirplaneService {
 
     public void changeInfo(List<Airport> airportList, List<FixedWing> fixedWingList, Scanner scanner) throws Exception {
         String FixedWingID;
+        AirportService airportService=new AirportService();
         int i;
         System.out.println("Enter Fixed Wing id: ");
         FixedWingID = scanner.nextLine();
@@ -365,6 +366,7 @@ public class AirplaneService {
             fixedWingList.get(i).display();
             try{
                 saveFW(fixedWingList);
+                airportService.save(airportList);
             }catch (Exception e){
                 throw new Exception();
             }
@@ -394,7 +396,11 @@ public class AirplaneService {
                         System.out.println("Enter min needed runway Size: ");
                         minNeededRunWay = scanner.nextLine();
                         try {
-                            airportList.get(loop).getFixedWingList().get(i).setMinNeededRunWaySize(Validator.parseDouble(minNeededRunWay));
+                            if(Validator.parseDouble(minNeededRunWay)<airportList.get(loop).getRunWaySize()){
+                                airportList.get(loop).getFixedWingList().get(i).setMinNeededRunWaySize(Validator.parseDouble(minNeededRunWay));
+                            }else{
+                                System.out.println("Runway size is too big.Can't change!");
+                            }
                         } catch (NumberFormatException e) {
                             System.err.println("Please enter min needed runway size again!");
                             continue;
@@ -402,6 +408,12 @@ public class AirplaneService {
                         break;
                     } while (true);
                     airportList.get(loop).getFixedWingList().get(i).display();
+                    try{
+                        saveFW(fixedWingList);
+                        airportService.save(airportList);
+                    }catch (Exception e){
+                        throw new Exception();
+                    }
                     System.out.println("Change successfull!");
                     break;
                 }else{
